@@ -302,10 +302,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.Unnamed" />
-      <item itemvalue="Python.dublinRabbitBikes" />
-      <item itemvalue="Python.dublinRabbitBikes1" />
       <item itemvalue="Python.Weather_Scraper" />
       <item itemvalue="Python.app" />
+      <item itemvalue="Python.dublinRabbitBikes1" />
+      <item itemvalue="Python.dublinRabbitBikes" />
     </list>
     <recent_temporary>
       <list>
