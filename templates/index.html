@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+
+      var map;
+      function initMap() {
+          var myLatLng = {lat: 53.397, lng: -6.644}
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 53.397, lng: -6.644},
+          zoom: 8
+        });
+
+
+    var markers = ({{station_list | tojson}});
+    console.log((markers))
+
+
+    for (var i = 0; i < markers.length; i++){
+
+      var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
+
+      var marker = new google.maps.Marker({
+    position: pos,
+    map: map,
+    title: markers[i].name
+      });
+
+    }
+
+
+
+
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
+    async defer></script>
+  <p>{{welcomemessage}}</p>
+  </body>
+</html>
