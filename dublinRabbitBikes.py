@@ -19,7 +19,7 @@ STATIONS_URI="https://api.jcdecaux.com/vls/v1/stations"       # and the JCDecaux
 APIKEY ="1b5a70bba36e98ed68efe695e839bcb44f4e6e27"
 
 def main():                                             # run forever...
-                                                         
+
     while True:
         try:
             api_request_response = requests.get(STATIONS_URI, params = {"apiKey": APIKEY, "contract": contract})
@@ -44,12 +44,15 @@ def main():                                             # run forever...
             else:
                 clean_df.to_csv('availability_csv.csv')
 
-            print("Sleeping..")# now sleep for 5 minutes
+            print("Sleeping..")  # now sleep for 5 minutes
             time.sleep(5*60)
 
         except:
+            # saves error messages to a file named test.txt rather than simply printing them to the console
             logging.basicConfig(filename='test.txt')
 
+            # formatting the error message - choosing which info to display
+            # (error type/error message/line number in code error occurred on
             logging.error('{}. {}, line: {}'.format(sys.exc_info()[0],
                                              sys.exc_info()[1],
                                              sys.exc_info()[2].tb_lineno))
@@ -57,7 +60,7 @@ def main():                                             # run forever...
             time.sleep(5*60)                                # now sleep for 5 minutes
 
             print(traceback.format_exc())               # if there is any problem, print the traceback
-    return
+    return  # says code is unreachable?
 
 
 main()
