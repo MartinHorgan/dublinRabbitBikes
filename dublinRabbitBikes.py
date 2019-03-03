@@ -6,6 +6,9 @@ import pandas as pd
 import sqlalchemy
 import pymysql
 from sqlalchemy import create_engine
+import os
+import os.path
+
 
 contract="Dublin"                                             # name of contract
 STATIONS_URI="https://api.jcdecaux.com/vls/v1/stations"       # and the JCDecaux endpoint
@@ -29,13 +32,22 @@ def main():                                             # run forever...
             connection = engine.connect()
             connection.execute("INSERT INTO availability SELECT * FROM temp_table ON DUPLICATE KEY UPDATE availability.status=temp_table.status")
 
+
+            PATH='/home/ubuntu/availability_csv.csv'
+            if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
+                with open('availability_csv.csv', 'a') as f:
+                    (clean_df).to_csv(f)
+            else:
+                clean_df.to_csv('availability_csv.csv')
+
+
             print("Sleeping..")# now sleep for 5 minutes
             time.sleep(5*60)
         except:
             print("error")
             time.sleep(5*60)                                # now sleep for 5 minutes
 
-#             print(traceback.format_exc())               # if there is any problem, print the traceback
+            print(traceback.format_exc())               # if there is any problem, print the traceback
     return
                 
 
