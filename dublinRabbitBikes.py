@@ -47,7 +47,7 @@ def main():                                             # run forever...
             print("Sleeping..")# now sleep for 5 minutes
             time.sleep(5*60)
 
-        except Exception as e :
+        except:
             logging.basicConfig(filename='test.txt')
 
             logging.error('{}. {}, line: {}'.format(sys.exc_info()[0],
@@ -58,6 +58,6 @@ def main():                                             # run forever...
 
             print(traceback.format_exc())               # if there is any problem, print the traceback
     return
-                
+
 
 main()
