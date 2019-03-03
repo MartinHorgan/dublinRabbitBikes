@@ -8,6 +8,10 @@ import pymysql
 from sqlalchemy import create_engine
 import os
 import os.path
+import traceback
+import logging
+import sys
+
 
 
 contract="Dublin"                                             # name of contract
@@ -40,11 +44,16 @@ def main():                                             # run forever...
             else:
                 clean_df.to_csv('availability_csv.csv')
 
-
             print("Sleeping..")# now sleep for 5 minutes
             time.sleep(5*60)
-        except:
-            print("error")
+
+        except Exception as e :
+            logging.basicConfig(filename='test.txt')
+
+            logging.error('{}. {}, line: {}'.format(sys.exc_info()[0],
+                                             sys.exc_info()[1],
+                                             sys.exc_info()[2].tb_lineno))
+
             time.sleep(5*60)                                # now sleep for 5 minutes
 
             print(traceback.format_exc())               # if there is any problem, print the traceback
