@@ -135,10 +135,10 @@ while True:
         print("I am outside function")
         bikesData()
         print("Sleeping...")
-        time.sleep(5 * 60)        # now sleep for 1 minutes
+        time.sleep(5 * 60)                          # now sleep for 5 minutes
         i += 1
         print(i)
-        while i >= 2:
+        while i > 11:
             weatherData()
             i=0
     except:
