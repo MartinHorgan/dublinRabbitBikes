@@ -31,9 +31,9 @@
           zoom: 13
         });
 
-
-    var markers = ({{station_list | tojson}});
-    console.log((markers))
+    /*pass in as a list instead of a whole string (safe instead of tojson)*/
+    var markers = {{station_list | safe }};
+    console.log(markers)
 
 
     for (var i = 0; i < markers.length; i++){
@@ -46,9 +46,6 @@
       });
 
     }
-
-
-
 
       }
     </script>

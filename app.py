@@ -13,7 +13,7 @@ def index():
         passwd="whiterabbit",
         database="dbbikes"
     )
-# prebuilt function in mysql to interaction with a database
+# prebuilt function in mysql to interact with a database
     mycursor = mydb.cursor(dictionary=True)
 # Next, we setup our SQL query
     mycursor.execute("SELECT name, latitude, longitude FROM stations")
@@ -25,15 +25,14 @@ def index():
     for x in myresult:
         station_list.append(dict((x)))
 # This 'welcomemessage' is an example of passing a variable back into the front end using jinjas2
-    welcomemessage = "Hello"
+    welcomemessage = "Hello, welcome to Dublin Bikes!"
 # Then we ALWAYS PRINT STUFF TO MAKE SURE IT'S ACTUALLY RIGHT'
     print(station_list)
-# Then we return something... This could be a html page, or variables... It's usually both though
 
 # this json dumps function is essential in returning data back to the front end correctly
-
     station_list = json.dumps(station_list)
 
+# Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list)
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
