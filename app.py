@@ -16,7 +16,7 @@ def index():
 # prebuilt function in mysql to interact with a database
     mycursor = mydb.cursor(dictionary=True)
 # Next, we setup our SQL query
-    mycursor.execute("SELECT name, latitude, longitude FROM stations")
+    mycursor.execute("SELECT stations.name, stations.latitude, stations.longitude FROM stations")
 # Then we get some stuff back... By appending a variable to the response of the query
     myresult = mycursor.fetchall()
 # We make an empty list

@@ -20,14 +20,11 @@
         padding: 0;
       } 
     </style>
-
   </head>
   <body>
-    <div id="logo"><img src="/static/images/db_logo_white.jpg"></div>
     <div id="map"></div>
 
     <p>{{welcomemessage}}</p>
-    <p>new</p>
 
     <div id="dropdown">  
       <select id='list'>
@@ -125,13 +122,55 @@
         <option value='64'> Sandwith Street </option>
         <option value='109'> Buckingham Street Lower </option>
         <option value='85'> Rothe Abbey </option>
-        <option value='107'> Charleville Road </option>
-        <option value='33'> Princes Street / O'Connell </option>
-        <option value='44'> Upper Sherrard Street </option>
-        <option value='89'> Fitzwilliam Square East </option>
+        <option value='107'> Charleville Road </option
+
+
+
+
+
+
+
+        <option value='33'> Princes Street / O'Connell
+
+
+
+
+
+
+
+        <option value='44'> Upper Sherrard Street </op
+
+
+
+
+
+
+
+        <option value='89'> Fitzwilliam Square East </
+
+
+
+
+
+
+
         <option value='57'> Grattan Street </option>
-        <option value='80'> St James Hospital (Luas) </option>
+        <option value='80'> St James Hospital (Luas) <
+
+
+
+
+
+
+
         <option value='41'> Harcourt Terrace </option>
+
+
+
+
+
+
+
         <option value='3'> Bolton Street </option>
         <option value='46'> Strand Street Great </option>
         <option value='40'> Jervis Street </option>
@@ -149,26 +188,33 @@
 
     <script>
       var map;
+  
       function initMap() {
-          var myLatLng = {lat: 53.348196, lng: -6.276942}
+        var myLatLng = {lat: 53.348196, lng: -6.276942}
+  
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
         });
-    /*pass in as a list instead of a whole string (safe instead of tojson)*/
-    var markers = {{station_list | safe }};
-    console.log(markers)
-    for (var i = 0; i < markers.length; i++){
-      var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
-      var marker = new google.maps.Marker({
-    position: pos,
-    map: map,
-    title: markers[i].name
-      });
-    }
-      }
-    </script>   
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
+  
+        /*pass in as a list instead of a whole string (safe instead of tojson)*/
+        var markers = {{station_list | safe }};
+        console.log(markers)
+  
+  
+        for (var i = 0; i < markers.length; i++) {
+          var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
+  
+          var marker = new google.maps.Marker({
+              position: pos,
+              map: map,
+              title: markers[i].name
+          });
+        };
+      };
+      </script>
+      
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
       async defer></script>  
   </body>
 </html>
