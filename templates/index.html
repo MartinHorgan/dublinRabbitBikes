@@ -27,7 +27,6 @@
     <div id="map"></div>
 
     <p>{{welcomemessage}}</p>
-    <p>new</p>
 
     <div id="dropdown">  
       <select id='list'>
@@ -150,24 +149,41 @@
     <script>
       var map;
       function initMap() {
-          var myLatLng = {lat: 53.348196, lng: -6.276942}
+        var myLatLng = {lat: 53.348196, lng: -6.276942}
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
-        });
-    /*pass in as a list instead of a whole string (safe instead of tojson)*/
-    var markers = {{station_list | safe }};
-    console.log(markers)
-    for (var i = 0; i < markers.length; i++){
-      var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
-      var marker = new google.maps.Marker({
-    position: pos,
-    map: map,
-    title: markers[i].name
-      });
-    }
+          });
+        /*pass in as a list instead of a whole string (safe instead of tojson)*/
+        var markers = {{station_list | safe }};
+        var infoWindow = new google.maps.InfoWindow({})
+        console.log(markers)
+        
+        for (var i = 0; i < markers.length; i++){
+          var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
+          var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title: markers[i].name
+          })
+          google.maps.event.addListener(
+            marker,
+            'click',
+            (function(marker, i) {
+              return function() {
+                var contentString = markers[i].name + '<br>' +  'candis';
+                infoWindow.setContent(contentString)
+                infoWindow.open(map, marker)
+              }
+            })(marker, i)
+          )}
+
+          /*close popup window*/
+         /* google.maps.event.addListener(map, 'click', function() {
+          infowindow.close();
+          });*/
       }
-    </script>   
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
       async defer></script>  
   </body>
