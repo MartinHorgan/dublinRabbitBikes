@@ -16,7 +16,7 @@ def index():
 # prebuilt function in mysql to interact with a database
     mycursor = mydb.cursor(dictionary=True)
 # Next, we setup our SQL query
-    mycursor.execute("SELECT stations.name, stations.latitude, stations.longitude FROM stations")
+    mycursor.execute("SELECT * from stations a, temp_table b where a.number= b.number order by a.address")
 # Then we get some stuff back... By appending a variable to the response of the query
     myresult = mycursor.fetchall()
 # We make an empty list
@@ -31,6 +31,7 @@ def index():
 
 # this json dumps function is essential in returning data back to the front end correctly
     station_list = json.dumps(station_list)
+
 
 # Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list)

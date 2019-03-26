@@ -36,7 +36,7 @@ def bikesData():
         print(clean_df)
 
         engine = create_engine("mysql+pymysql://root:whiterabbit@dbbikes.cydtuzfevnm7.us-east-1.rds.amazonaws.com:3306/dbbikes", echo=True)
-        clean_df.to_sql(name='temp_table', con=engine, if_exists='replace', index=False)
+        clean_df.to_sql(name='temp_table', con=engine, if_exists='replace', index=False, dtype={'last_update': sqlalchemy.types.NVARCHAR(length=45)})
         connection = engine.connect()
         connection.execute("INSERT INTO availability SELECT * FROM temp_table ON DUPLICATE KEY UPDATE availability.status=temp_table.status")
 
