@@ -1,12 +1,21 @@
 .header {
-	font-size: 35px;
-	color:#064D57;
-    text-align:center;
-}
-.p {
-	height:0px;
+	display: block;
+	padding-left: 75px;
+	font-size: 75px;
+	color: #064D57;
+	text-align:center;
 }
 
+.p{
+	font-size: 35px;
+	color: #064D57;
+	text-align:center;
+}
+.img{
+	width:75px;
+	height:75px;
+	vertical-align: middle;
+}
 .nav {
     display:block;
     position:sticky;
@@ -22,13 +31,13 @@
     color:#f2f2f2;
     text-align:center;
     border-right:solid #064D57;
-    padding:15px 15px;
+    padding:10px 15px;
     text-decoration: none;
 }
 
 .nav a:hover {
     background-color:#ddd;
-    color:black;
+    color:#064D57;
 }
 
 .margin {
@@ -36,32 +45,32 @@
     display:block;
     text-align:center;
     width:20%;
-    height:580;
+    height:550px;
     padding:15px;
     border-right:solid #064D57;
     border-left:solid #064D57;
 }
 
 .button {
-    background-color:red;
-    border-radius:20px;
+    background-color:#064D57;
+    border-radius:10px;
     border:1px solid black;
     color:white;
-    padding:15px;
+    padding: 5px
     text-align:center;
     text-decoration:none;
     display:inline-block;
     font-size:16px;
     margin:15px;
-    min-width:35px;
+    min-width:100px;
     cursor:pointer;
 }
 
 .column {
-    display:inline-block;
+    display:inline-flex;
     text-align: center;
-    width:70%;
-    height:580px;
+    height:550px;
+	width:75%;
     padding:10px;
 }
 
@@ -72,9 +81,16 @@
     text-align: center;
 }
 
+.dropdown{
+    text-align: center;
+    
+}
+#list{
+
+	
+}
 #map {
-    float: right;
-    height: 100%;
-	width: 100%;
+    float: left;
+    height:100%;
 }
 

@@ -10,9 +10,12 @@
 <!----Body----------------------------------------------------------------------------------->
 <body>
 	<div class="header">
-		<p><img src="/static/images/db_logo_white.jpg" alt="logo" style="width:75px;">    Dublin Bikes    <img src="/static/images/db_logo_white.jpg" alt="logo" style= "width:75px;"></P>
+		<a><img src="/static/images/db_logo_white.jpg" alt="logo" style="width: 75px"></a>
+    	<a>Dublin Bikes</a>
+		<a><img src="/static/images/db_logo_white.jpg" alt="logo" style="width: 75px"></a>
 	</div>
 
+<!----Header container------------------------------------------------------------------------->
   <div class="nav">
     <a href="index.html">Home</a>
     <a href="graph.html">Graph</a>
@@ -20,12 +23,13 @@
     <a href="contact.html">Contact</a>
   </div>
 
+<!-------Side manu container------------------------------------------------------------------->
 	<div class="margin">
-		<br/>
+	<br/>
+	<br/>
+		<p><i>Please select your station:</i></p>
+	
     <br/>
-
-<!-------Station dropdown list------------------------------------------------------------------->
-		<p> Select station:</p>
     <div class="dropdown">  
       <form id="selections">
         <select id='list'>
@@ -143,22 +147,26 @@
           <option value='52'>York Street East</option>
           <option value='51'>York Street West</option>
         </select>
+		  	<br/>
+    		<br/>
         <input type="button" class="button" value="Submit" onclick="dropdown()">
+		  
       </form>
     </div>
     <div id='extraDropdownInfo'>
-      <!-- available bikes and stands displays here -->
+<!--- available bikes and stands displays here --------------------------------------------->
     </div>
 	</div>
 
 	
 	<div class="column">
-		<div id="map" style= "width:100%"></div>
+		<div id="map" style="width:100%"></div>
   </div>
 	
 <!---Map script------------------------------------------------------------------------------->
     <script>
-    /*map script*/
+		
+	  /*map script*/
       var map;
       function initMap() {
         var myLatLng = {lat: 53.348196, lng: -6.276942}
@@ -166,6 +174,7 @@
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
         });
+		  
         /*pass in as a list instead of a whole string (safe instead of tojson)*/
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
@@ -199,14 +208,14 @@
             })(marker, i)
           )
         }
-
           /*close popup window*/
          /* google.maps.event.addListener(map, 'click', function() {
           infowindow.close();
           });*/
-
       }
-	function dropdown() {
+	  
+	  	/*station list script*/
+		function dropdown() {
 		var markers = {{station_list | safe}};
 		
 		var ddsel = document.getElementById("list");
@@ -233,7 +242,6 @@
 
 		extraInfo += "</p>"
 		document.getElementById("extraDropdownInfo").innerHTML = extraInfo;
-
     }
     </script>
 
