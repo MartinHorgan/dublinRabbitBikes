@@ -60,7 +60,7 @@
 .column {
     display:inline-block;
     text-align: center;
-    width:100%;
+    width:70%;
     height:580px;
     padding:10px;
 }
@@ -77,3 +77,4 @@
     height: 100%;
 	width: 100%;
 }
+
