@@ -8,8 +8,21 @@
   </head>
   
   <body>
-    <div id="logo"><img src="/static/images/db_logo_white.jpg"></div>
-    <div id="map"></div>
+	<div class="header">
+		<P><img src="/static/images/db_logo_white.jpg" alt="logo" style="width:75px;">    Dublin Bikes    <img src="/static/images/db_logo_white.jpg" alt="logo" style= "width:75px;"></P>
+	</div>
+
+      	<div class="nav">
+		 <a href="index.html">Home</a>
+		 <a href="graph.html">Graph</a>
+		 <a href="details.html">Detail</a>
+		 <a href="contact.html">Contact</a>
+  	</div>
+
+    	<div class="margin">
+			<br />
+			<button class="button" size="35" type="button" onclick="start()">Refine!</button>
+    		<br />
 
     <p>{{welcomemessage}}</p>
 
@@ -135,8 +148,25 @@
     </div>
     <div id='extraDropdownInfo'>
       <!-- available bikes and stands displays here -->
-    </div>
+	  		<br />
+			<br />
+			<br />
+	 		<p>Select Now:</p>
+			<br />
+			<input type="radio" name="gender" value="both" checked> Both<br>
+			<input type="radio" name="gender" value="male"> Male<br>
+			<input type="radio" name="gender" value="female"> Female<br>
 
+	  		<br />
+        	<a href="media/Serialisation.mp4" class="button">Show Graphics</a>
+      		<br />
+        	<a href="media/Antares.mp4" class="button">Details</a>
+  	</div>
+
+
+	<div class="column">
+      <div id="map" style= "width:100%"></div>
+  	</div>
 
 
     <script>
