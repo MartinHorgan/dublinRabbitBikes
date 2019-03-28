@@ -22,6 +22,7 @@ def index():
 # We make an empty list
     station_list=[]
 # for every result we get back, we add that to the list in a new index
+
     for x in myresult:
         station_list.append(dict((x)))
 # This 'welcomemessage' is an example of passing a variable back into the front end using jinjas2
