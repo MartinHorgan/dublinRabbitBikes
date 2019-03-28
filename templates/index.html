@@ -2,17 +2,30 @@
 <html lang="en">
 	
   <head>
-	<title>Dublin Bikes</title>
+  	<title>Dublin Bikes</title>
     <meta charset="utf-8" name="viewport" content="initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/mycss.css') }}">
   </head>
-  
-  <body>
-    <div id="logo"><img src="/static/images/db_logo_white.jpg"></div>
-    <div id="map"></div>
+ 
+<!----Body----------------------------------------------------------------------------------->
+<body>
+	<div class="header">
+		<p><img src="/static/images/db_logo_white.jpg" alt="logo" style="width:75px;">    Dublin Bikes    <img src="/static/images/db_logo_white.jpg" alt="logo" style= "width:75px;"></P>
+	</div>
 
-    <p>{{welcomemessage}}</p>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="graph.html">Graph</a>
+    <a href="details.html">Detail</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
+	<div class="margin">
+		<br/>
+    <br/>
+
+<!-------Station dropdown list------------------------------------------------------------------->
+		<p> Select station:</p>
     <div class="dropdown">  
       <form id="selections">
         <select id='list'>
@@ -136,9 +149,14 @@
     <div id='extraDropdownInfo'>
       <!-- available bikes and stands displays here -->
     </div>
+	</div>
 
-
-
+	
+	<div class="column">
+		<div id="map" style= "width:100%"></div>
+  </div>
+	
+<!---Map script------------------------------------------------------------------------------->
     <script>
     /*map script*/
       var map;
@@ -147,7 +165,7 @@
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
-          });
+        });
         /*pass in as a list instead of a whole string (safe instead of tojson)*/
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
@@ -165,69 +183,67 @@
           marker.addListener('click', function() {
             map.setZoom(18);
             map.setCenter(marker.getPosition());
-            });
+          });
           google.maps.event.addListener(
             marker,
             'click',
             (function(marker, i) {
               return function() {
-
                 var contentString = markers[i].name + '<br>' + '<br>' +  'Number of bikes to ride: ' + markers[i].available_bikes
                 + '<br>' + 'Number of bike stands empty: ' + markers[i].available_bike_stands + '<br>' +
                 'Last updated: ' + markers[i].last_update;
+
                 infoWindow.setContent(contentString)
                 infoWindow.open(map, marker)
               }
             })(marker, i)
-          )}
+          )
+        }
 
           /*close popup window*/
          /* google.maps.event.addListener(map, 'click', function() {
           infowindow.close();
           });*/
-      }
-
-      function dropdown() {
-        var markers = {{station_list | safe}};
-        
-        var ddsel = document.getElementById("list");
-        var selectedStation = ddsel.options[ddsel.selectedIndex].value;
-
-        var extraInfo = "<p>"
-        // return station number - set to variable
-        // if i = station number, print available bikes and available stands (check i, might need to change variables created below)
-
-        for (var i = 0; i < markers.length; i++) {
-          var availableBikes = markers[i].available_bikes;
-          var availableStands = markers[i].available_bike_stands;
-          var stationNum = markers[i].number;
-          var stationAddress = markers[i].address;
-          
-          if (selectedStation == stationNum) {
-            extraInfo += stationAddress + "<br/>" 
-            + "Available bikes: " 
-            + availableBikes + "<br/>" 
-            + "Available stands: " 
-            + availableStands;
-
-          }
-
-        }
-
-        extraInfo += "</p>"
-        document.getElementById("extraDropdownInfo").innerHTML = extraInfo;
 
       }
+	function dropdown() {
+		var markers = {{station_list | safe}};
+		
+		var ddsel = document.getElementById("list");
+		var selectedStation = ddsel.options[ddsel.selectedIndex].value;
 
+		var extraInfo = "<p>"
+		// return station number - set to variable
+		// if i = station number, print available bikes and available stands (check i, might need to change variables created below)
+
+		for (var i = 0; i < markers.length; i++) {
+		  var availableBikes = markers[i].available_bikes;
+		  var availableStands = markers[i].available_bike_stands;
+		  var stationNum = markers[i].number;
+		  var stationAddress = markers[i].address;
+		  
+		  if (selectedStation == stationNum) {
+		    extraInfo += stationAddress + "<br/>" 
+		    + "Available bikes: " 
+		    + availableBikes + "<br/>" 
+		    + "Available stands: " 
+		    + availableStands;
+		  }
+		}
+
+		extraInfo += "</p>"
+		document.getElementById("extraDropdownInfo").innerHTML = extraInfo;
+
+    }
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
-      async defer></script>  
-  
-  <!---Footer--------------------------------------------------------------------------------------> 
-	
+      async defer></script>
+
+ <!---Footer--------------------------------------------------------------------------------------> 
 	<div class="footer">
-    	<p>Copyright &#169 Candis, Natasha and Martin 2019</p>
-	</div>
-  </body>
+    <p>Copyright &#169 Candis, Natasha and Martin 2019</p>
+  </div>
+  
+</body>
 </html>
