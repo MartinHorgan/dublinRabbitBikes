@@ -147,6 +147,7 @@
     </div>
 
     <script>
+    /*map script*/
       var map;
       function initMap() {
         var myLatLng = {lat: 53.348196, lng: -6.276942}
@@ -158,25 +159,33 @@
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
         console.log(markers)
-        
+
         for (var i = 0; i < markers.length; i++){
           var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
           var marker = new google.maps.Marker({
             position: pos,
             map: map,
-            title: markers[i].name
+            title: markers[i].name,
+            animation: google.maps.Animation.DROP
           })
+          marker.addListener('click', function() {
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
+            });
           google.maps.event.addListener(
             marker,
             'click',
             (function(marker, i) {
               return function() {
-                var contentString = markers[i].name + '<br>' +  'candis';
+                var contentString = markers[i].name + '<br>' + '<br>' +  'Number of bikes to ride: ' + markers[i].available_bikes
+                + '<br>' + 'Number of bike stands empty: ' + markers[i].available_bike_stands + '<br>' +
+                'Last updated: ' + markers[i].last_update;
                 infoWindow.setContent(contentString)
                 infoWindow.open(map, marker)
               }
             })(marker, i)
           )}
+
 
           /*close popup window*/
          /* google.maps.event.addListener(map, 'click', function() {
