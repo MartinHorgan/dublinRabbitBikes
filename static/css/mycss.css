@@ -1,7 +1,13 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .header {
 	font-size: 35px;
 	color:#064D57;
     text-align:center;
+    height: 80px;
+    margin: 30px;
 }
 .p {
 	height:0px;
@@ -17,7 +23,7 @@
 .nav a {
     float:left;
     display:block;
-    width:20%;
+    width:29.675%;
     font-size:1em;
     color:#f2f2f2;
     text-align:center;
@@ -27,40 +33,52 @@
 }
 
 .nav a:hover {
-    background-color:#ddd;
-    color:black;
+    background-color:#056370;
+    /* color:black; */
 }
 
 .margin {
     float:left;
     display:block;
-    text-align:center;
+    /*text-align:center;*/
     width:20%;
-    height:580;
+    height:580px;
     padding:15px;
     border-right:solid #064D57;
     border-left:solid #064D57;
 }
 
+select {
+    width: 65%;
+    height: 30px;
+    font-size: 9pt;
+ }
+
 .button {
-    background-color:red;
-    border-radius:20px;
-    border:1px solid black;
-    color:white;
-    padding:15px;
+    /* background-color:#BDBEC0; */
+    border-radius:0px;
+    /* border:1px solid black; */
+    color:black;
+    height: 30px;
+    padding:5px;
     text-align:center;
     text-decoration:none;
     display:inline-block;
-    font-size:16px;
-    margin:15px;
+    font-size:9pt;
+    /* margin:5px; */
     min-width:35px;
     cursor:pointer;
+    display: inline-block;
 }
 
 .column {
     display:inline-block;
     text-align: center;
+<<<<<<< Updated upstream
     width:100%;
+=======
+    width:73.6%;
+>>>>>>> Stashed changes
     height:580px;
     padding:10px;
 }
@@ -76,4 +94,8 @@
     float: right;
     height: 100%;
 	width: 100%;
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
