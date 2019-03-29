@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/mycss.css') }}">
   </head>
  
-<!----Body----------------------------------------------------------------------------------->
+<!--Body----------------------------------------------------------------------------------->
 <body>
 	<div class="header">
 		<a><img src="/static/images/db_logo_white.jpg" alt="logo" style="width: 75px"></a>
@@ -15,19 +15,26 @@
 		<a><img src="/static/images/db_logo_white.jpg" alt="logo" style="width: 75px"></a>
 	</div>
 
-<!----Header container------------------------------------------------------------------------->
-  <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="graph.html">Graph</a>
-    <a href="details.html">Detail</a>
-    <a href="contact.html">Contact</a>
-  </div>
+<!--Header container------------------------------------------------------------------------->
+	<div class="nav">
+		<a href="index.html">Home</a>
+		<a href="graph.html">Graph</a>
+		<a href="details.html">Detail</a>
+		<a href="contact.html">Contact</a>
+	</div>
+
 
 <!-------Side menu container------------------------------------------------------------------->
+  
 	<div class="margin">
 	<br/>
-	<br/>
-		<p><i>Please select your station:</i></p>
+	    <div id="radio">
+	      <input type='radio' name='radioAvail' value='all' checked >All<br>
+		    <input type='radio' name='radioAvail' value='AvailableBikes'>Available bikes<br>
+		    <input type='radio' name='radioAvail' value='AvailableStands'>Available stands<br/>
+	    </div>
+    	<br/>
+	<p><i>Please select your station:</i></p>
 	
     <br/>
     <div class="dropdown">  
@@ -233,26 +240,43 @@
         }
       }
 
-	  	/*station list script*/
-		function dropdown() {
+	/*station list script*/
+	function dropdown() {
 		var markers = {{station_list | safe}};
+
 		var ddsel = document.getElementById("list");
 		var selectedStation = ddsel.options[ddsel.selectedIndex].value;
+
+		var radios = document.getElementById("radio");
+		for (var i=0; i<radios.length; i++) {
+			if (radio[i].checked) {
+				var selectedRadio = radios[i].value;
+			}
+		}
+
 		var extraInfo = "<p>"
 		// return station number - set to variable
 		// if i = station number, print available bikes and available stands (check i, might need to change variables created below)
 		for (var i = 0; i < markers.length; i++) {
-		  var availableBikes = markers[i].available_bikes;
-		  var availableStands = markers[i].available_bike_stands;
-		  var stationNum = markers[i].number;
-		  var stationAddress = markers[i].address;
-		  if (selectedStation == stationNum) {
-		    extraInfo += stationAddress + "<br/>" 
-		    + "Available bikes: " 
-		    + availableBikes + "<br/>" 
-		    + "Available stands: " 
-		    + availableStands;
-		  }
+			var availableBikes = markers[i].available_bikes;
+			var availableStands = markers[i].available_bike_stands;
+			var stationNum = markers[i].number;
+			var stationAddress = markers[i].address;
+			var lastUpdate = markers[i].last_update;
+			var cardPayment = markers[i].banking;
+
+			if (selectedStation == stationNum) {
+			extraInfo += "<b>" + stationAddress + "</b><br/><br/>" 
+			+ "Available bikes: " + availableBikes + "<br/>" 
+			+ "Available stands: " + availableStands + "<br/>"
+			+ "Last updated: " + lastUpdate + "<br/>";
+
+				if (cardPayment == 1) {
+					extraInfo += "Card payments accepted: Yes";
+				} else {
+					extraInfo += "Card payments accepted: No";
+				}
+			}
 		}
 		extraInfo += "</p>"
 		document.getElementById("extraDropdownInfo").innerHTML = extraInfo;
@@ -273,7 +297,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
       async defer></script>
 
- <!---Footer--------------------------------------------------------------------------------------> 
+ <!--Footer--------------------------------------------------------------------------------------> 
 	<div class="footer">
     <p>Copyright &#169 Candis, Natasha and Martin 2019</p>
   </div>
