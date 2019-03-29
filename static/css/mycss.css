@@ -56,7 +56,7 @@
     border-radius:10px;
     border:1px solid black;
     color:white;
-    padding: 5px
+    padding: 5px;
     text-align:center;
     text-decoration:none;
     display:inline-block;
@@ -70,7 +70,8 @@
     display:inline-flex;
     text-align: center;
     height:550px;
-	width:75%;
+    width:73.6%;
+    height: 580px;
     padding:10px;
 }
 
@@ -85,12 +86,10 @@
     text-align: center;
     
 }
-#list{
 
-	
-}
 #map {
     float: left;
     height:100%;
+    width: 100%;
 }
 
