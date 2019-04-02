@@ -5,6 +5,8 @@
   	<title>Dublin Bikes</title>
     <meta charset="utf-8" name="viewport" content="initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/mycss.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   </head>
  
 <!--Body----------------------------------------------------------------------------------->
@@ -27,17 +29,18 @@
 <!-------Side menu container------------------------------------------------------------------->
   
 	<div class="margin">
-	<br/>
-	    <div id="radio">
-	      <input type='radio' name='radioAvail' value='all' checked >All<br>
-		    <input type='radio' name='radioAvail' value='AvailableBikes'>Available bikes<br>
-		    <input type='radio' name='radioAvail' value='AvailableStands'>Available stands<br/>
-	    </div>
-    	<br/>
-	<p><i>Please select your station:</i></p>
-	
     <br/>
-    <div class="dropdown">  
+    <div id="radio">
+      <input type='radio' name='radioAvail' value='all' checked >All<br>
+      <input type='radio' name='radioAvail' value='AvailableBikes'>Available bikes<br>
+      <input type='radio' name='radioAvail' value='AvailableStands'>Available stands<br/>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+
+    <div class="dropdown">
+      <p><i>Please select your station:</i></p>  
       <form id="selections">
         <select id='list'>
           <option value='108'>Avondale Road </option>
@@ -167,6 +170,7 @@
 
 	
 	<div class="column">
+
 		<div id="map" style="width:100%"></div>
   </div>
 	
@@ -174,6 +178,7 @@
     <script>
 		
       var map;
+      
       function initMap() {
         var myLatLng = {lat: 53.348196, lng: -6.276942}
         map = new google.maps.Map(document.getElementById('map'), {
@@ -184,19 +189,35 @@
         /*pass in as a list instead of a whole string (safe instead of tojson)*/
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
+        // var markerextra;
+        // var markerinfo;
         console.log(markers)
-      
+        var light = '/static/images/light.png'
+        var middle = '/static/images/middle.png'
+        var dark = '/static/images/dark.png'
+        var lightPark = '/static/images/lightPark.png'
+        var middlePark = '/static/images/middlePark.png'
+        var darkPark = '/static/images/darkPark.png'
+
         for (var i = 0; i < markers.length; i++){
           var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
+          var currentIcon;
+          if (markers[i].available_Bikes >= 15) {
+            currentIcon = dark;
+          }else if ((markers[i].available_bikes >= 5) && (markers[i].available_bikes < 15)) {
+            currentIcon = middle;
+          }else if (markers[i].available_bikes < 5) {
+            currentIcon = light;
+          }
           var marker = new google.maps.Marker({
             position: pos,
             map: map,
-
+            icon: currentIcon,
             title: markers[i].name,
             animation: google.maps.Animation.DROP
           })
           marker.addListener('click', function() {
-            map.setZoom(18);
+            map.setZoom(19);
             map.setCenter(marker.getPosition());
           });
           google.maps.event.addListener(
@@ -208,12 +229,27 @@
                 + '<br>' + 'Number of bike stands empty: ' + markers[i].available_bike_stands + '<br>' +
                 'Last updated: ' + markers[i].last_update;
 
+                var sideContent = "<p>" + "<b>" + markers[i].address + "</b><br/><br/>" 
+                + "Available bikes: " + markers[i].available_bikes + "<br/>" 
+                + "Available stands: " + markers[i].available_bike_stands + "<br/>"
+                + "Last updated: " + markers[i].last_update + "<br/>";
+
+                if (markers[i].banking == 1) {
+					        sideContent += "Card payments accepted: Yes";
+                } else {
+                  sideContent += "Card payments accepted: No";
+                }
+
+                sideContent += "</p>";
+
                 infoWindow.setContent(contentString)
                 infoWindow.open(map, marker)
+                document.getElementById("extraDropdownInfo").innerHTML = sideContent;
               }
             })(marker, i)
           )
         }
+    
           /*close popup window*/
          /* google.maps.event.addListener(map, 'click', function() {
           infowindow.close();

@@ -3,7 +3,8 @@
 	padding-left: 75px;
 	font-size: 75px;
 	color: #064D57;
-	text-align:center;
+    text-align:center;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .p{
@@ -21,6 +22,7 @@
     position:sticky;
     overflow:hidden;
     background-color:#064D57;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .nav a {
@@ -43,12 +45,13 @@
 .margin {
     float:left;
     display:block;
-    text-align:center;
+    /* text-align:center; */
     width:20%;
     height:550px;
     padding:15px;
     border-right:solid #064D57;
     border-left:solid #064D57;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .button {
@@ -68,7 +71,7 @@
 
 .column {
     display:inline-flex;
-    text-align: center;
+    text-align: left;
     height:550px;
     width:73.6%;
     height: 580px;
@@ -80,16 +83,23 @@
     color: white;
     padding: 1px;
     text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .dropdown{
     text-align: center;
-    
+}
+
+select {
+    width: 90%;
+}
+
+#radio {
+    text-align: left;
 }
 
 #map {
-    float: left;
+    /* float: left; */
     height:100%;
     width: 100%;
 }
-
