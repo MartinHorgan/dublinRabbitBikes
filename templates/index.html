@@ -185,18 +185,32 @@
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
         console.log(markers)
-      
+        var light = '/static/images/light.png'
+        var middle = '/static/images/middle.png'
+        var dark = '/static/images/dark.png'
+        var lightPark = '/static/images/lightPark.png'
+        var middlePark = '/static/images/middlePark.png'
+        var darkPark = '/static/images/darkPark.png'
+
         for (var i = 0; i < markers.length; i++){
           var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
+          var currentIcon;
+          if (markers[i].available_Bikes >= 15) {
+            currentIcon = dark;
+          }else if ((markers[i].available_bikes >= 5) && (markers[i].available_bikes < 15)) {
+            currentIcon = middle;
+          }else if (markers[i].available_bikes < 5) {
+            currentIcon = light;
+          }
           var marker = new google.maps.Marker({
             position: pos,
             map: map,
-
+            icon: currentIcon,
             title: markers[i].name,
             animation: google.maps.Animation.DROP
           })
           marker.addListener('click', function() {
-            map.setZoom(18);
+            map.setZoom(19);
             map.setCenter(marker.getPosition());
           });
           google.maps.event.addListener(
