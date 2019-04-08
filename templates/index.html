@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-	
+
   <head>
   	<title>Dublin Bikes</title>
     <meta charset="utf-8" name="viewport" content="initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/mycss.css') }}">
-    <script src="static/Chart.min.js"></script>
+        <script src="static/javascript/chart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   </head>
- 
+
 <!--Body----------------------------------------------------------------------------------->
 <body>
-	<div class="header">
-		<a><img src="/static/images/db_logo_white.jpg" alt="logo" style="width: 75px"></a>
+<div class="header">
+  <div class="col"><img src="/static/images/kilroy.png" alt="logo"></div>
+  <div class="col">
+        <a><img src="/static/images/db_logo_white.jpg"></a>
     	<a>Dublin Bikes</a>
-		<a class="current"></a>
-	</div>
+  </div>
+  <div class="col"><a class="current"></a></div>
+  <div class="col"><a>&#8451</a></div>
+</div>
 
-<!--Header container------------------------------------------------------------------------->
+<!--Navbar container------------------------------------------------------------------------->
 	<div class="nav">
 		<a href="index.html">Home</a>
 		<a href="graph.html">Graph</a>
@@ -27,10 +31,10 @@
 		<a href="contact.html">Contact</a>
 	</div>
 
-
 <!-------Side menu container------------------------------------------------------------------->
-  
-	<div class="margin">
+<div class="row">
+
+  <div class="margin">
     <br/>
     <div id="radio">
       <input type='radio' name='radioAvail' value='all' checked >All<br>
@@ -42,7 +46,7 @@
     <br/>
 
     <div class="dropdown">
-      <p><i>Please select your station:</i></p>  
+      <p><i>Please select your station:</i></p>
       <form id="selections">
         <select id='list'>
           <option value='108'>Avondale Road </option>
@@ -162,32 +166,106 @@
 		  	<br/>
     		<br/>
         <input type="button" class="button" value="Submit" onclick="dropdown()">
-		  
+
       </form>
     </div>
+
     <div id='extraDropdownInfo'>
-<!--- available bikes and stands displays here --------------------------------------------->
+
     </div>
-	</div>
+<!--Chart1------------------------------------------------------------------------------------->
 
-	
-	<div class="column">
+    <canvas id="chart1" width="250" height="150"></canvas>
+    <script>
+       // bar chart data<br />
+       var barData1 = {
+       labels : [{% for item in times %}
+                      "{{item}}",
+                  {% endfor %}],
+       datasets : [
+          {
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+             data : [{% for item in qty %}
+                          {{item}},
+                        {% endfor %}]
+          }
+          ]
+       }
 
-		<div id="map" style="width:100%"></div>
+       var mychart1 = document.getElementById("chart1").getContext("2d");
+       steps = 4;
+       max = 30;
+       new Chart(mychart1).Bar(barData1, {
+           scaleOverride: true,
+           scaleSteps: steps,
+           scaleStepWidth: Math.ceil(max / steps),
+           scaleStartValue: 0,
+           scaleShowVerticalLines: true,
+           scaleShowGridLines: true,
+           barShowStroke: true,
+           scaleShowLabels: true
+       });
+    </script>
+
+
+ <!--Chart2------------------------------------------------------------------------------------->
+
+    <canvas id="chart2" width="250" height="150"></canvas>
+    <script>
+       // bar chart data<br />
+       var barData2 = {
+       labels : [{% for item in labels %}
+                      "{{item}}",
+                  {% endfor %}],
+       datasets : [
+          {
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+             data : [{% for item in day_values %}
+                          {{item}},
+                        {% endfor %}]
+          }
+          ]
+       }
+
+       var mychart2 = document.getElementById("chart2").getContext("2d");
+       steps = 4;
+       max = 35;
+       new Chart(mychart2).Line(barData2, {
+           scaleOverride: true,
+           scaleSteps: steps,
+           scaleStepWidth: Math.ceil(max / steps),
+           scaleStartValue: 0,
+           scaleShowVerticalLines: true,
+           scaleShowGridLines: true,
+           barShowStroke: true,
+           scaleShowLabels: true
+       });
+    </script>
+
   </div>
-	
+<!--End Nav Container------------------------------------------------------------------------>
+
+  <div class="column">
+		<div id="map"></div>
+  </div>
+</div>
+
 <!---Map script------------------------------------------------------------------------------->
     <script>
-		
+
       var map;
-      
+
       function initMap() {
         var myLatLng = {lat: 53.348196, lng: -6.276942}
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
         });
-		  
+
         /*pass in as a list instead of a whole string (safe instead of tojson)*/
         var markers = {{station_list | safe }};
         var infoWindow = new google.maps.InfoWindow({})
@@ -231,8 +309,8 @@
                 + '<br>' + 'Number of bike stands empty: ' + markers[i].available_bike_stands + '<br>' +
                 'Last updated: ' + markers[i].last_update;
 
-                var sideContent = "<p>" + "<b>" + markers[i].address + "</b><br/><br/>" 
-                + "Available bikes: " + markers[i].available_bikes + "<br/>" 
+                var sideContent = "<p>" + "<b>" + markers[i].address + "</b><br/><br/>"
+                + "Available bikes: " + markers[i].available_bikes + "<br/>"
                 + "Available stands: " + markers[i].available_bike_stands + "<br/>"
                 + "Last updated: " + markers[i].last_update + "<br/>";
 
@@ -251,13 +329,13 @@
             })(marker, i)
           )
         }
-    
+
           /*close popup window*/
          /* google.maps.event.addListener(map, 'click', function() {
           infowindow.close();
           });*/
-          
-        // geolocation 
+
+        // geolocation
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -304,8 +382,8 @@
 			var cardPayment = markers[i].banking;
 
 			if (selectedStation == stationNum) {
-			extraInfo += "<b>" + stationAddress + "</b><br/><br/>" 
-			+ "Available bikes: " + availableBikes + "<br/>" 
+			extraInfo += "<b>" + stationAddress + "</b><br/><br/>"
+			+ "Available bikes: " + availableBikes + "<br/>"
 			+ "Available stands: " + availableStands + "<br/>"
 			+ "Last updated: " + lastUpdate + "<br/>";
 
@@ -335,55 +413,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCavW5Ssi8LxuHtrKVg2vmdVkmoEm_VbBg&callback=initMap"
       async defer></script>
 
-     <!--Chart1------------------------------------------------------------------------------------->
-
-    <!--<canvas id="chart1" width="600" height="400"></canvas>-->
-    <!--<script>-->
-        <!--// bar chart data<br />-->
-        <!--var barData = {-->
-        <!--labels : [{% for item in labels %};-->
-                    <!--"{{item}}",-->
-                  <!--{% endfor %}],-->
-        <!--datasets: [-->
-          <!--{-->
-            <!--fillColor: "rgba(151,187,205,0.2)",-->
-            <!--strokeColor: "rgba(151,187,205,1)",-->
-            <!--pointColor: "rgba(151,187,205,1)",-->
-            <!--data : [{% for item in day_values %}-->
-                      <!--{{item}},-->
-                    <!--{% endfor %}]-->
-          <!--}-->
-          <!--]-->
-        <!--}-->
-
-        <!--var mychart = document.getElementById("chart").getContext("2d");-->
-        <!--steps = 4;-->
-        <!--max = 45;-->
-        <!--new Chart(mychart).Line(barData, {-->
-            <!--scaleOverride: true,-->
-            <!--scaleSteps: steps,-->
-            <!--scaleStepWidth: Math.ceil(max / steps),-->
-            <!--scaleStartValue: 0,-->
-            <!--scaleShowVerticalLines: true,-->
-            <!--scaleShowGridLines: true,-->
-            <!--barShowStroke: true,-->
-            <!--scaleShowLabels: true-->
-        <!--});-->
-    <!--</script>-->
-
-
-
-
-
-
- <!--Chart 2------------------------------------------------------------------------------------->
-
-
 <!--Weather Icon--------------------------------------------------------------------------------->
 
     <script>
         $.ajax({
-        url: "http://api.openweathermap.org/data/2.5/weather",
+        url: "http://api.openweathermap.org/data/2.5/weather?units=metric",
         jsonp: "callback",
         dataType: "jsonp",
         data: {
@@ -392,15 +426,15 @@
         },
         success: function( response ) {
         console.log( response ); // server response
-        $('.current').html('<img src="http://openweathermap.org/img/w/' + response.weather[0].icon + '.png" />' + response.weather[0].main);
+        $('.current').html('<img src="http://openweathermap.org/img/w/' + response.weather[0].icon + '.png" />' + response.main.temp);
         }
         });
     </script>
 
- <!--Footer--------------------------------------------------------------------------------------> 
-	<div class="footer">
+ <!--Footer-------------------------------------------------------------------------------------->
+<div class="footer">
     <p>Copyright &#169 Candis, Natasha and Martin 2019</p>
-  </div>
-  
+</div>
+
 </body>
 </html>

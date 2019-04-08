@@ -38,11 +38,12 @@ def index():
 # GENERATE CHARTS
     # input variables
     x = datetime.datetime.now()
-    station_number = 92
+    station_number = 99
     dayx = x.strftime("%A")
-    hourx = x.strftime("%H")
+    hourx = int(x.strftime("%H"))
     print(dayx)
     print(hourx)
+
 
 # CHART: AVG BIKES BY DAY/HOUR
 
@@ -52,59 +53,59 @@ def index():
     # print(myresult)
     now=[]
     for i in myresult:
-        # print(i)
+        print(i)
         now.append(i)
-    avgbike = int((now[0][0]))
-    print("Now:", now)
+    nowx = int((now[0][0]))
+    print("Now:", nowx)
 
 
     mycursor = mydb.cursor(dictionary=False)
-    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx,))
+    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx+1,))
     myresult = mycursor.fetchall()
     # print(myresult)
     now1 = []
     for i in myresult:
-        # print(i)
+        print(i)
         now1.append(i)
-    avgbike = int((now1[0][0]))
-    print("+1hr:", now1)
+    now1x = int((now1[0][0]))
+    print("1hr:", now1x)
 
     mycursor = mydb.cursor(dictionary=False)
-    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx,))
+    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, (hourx+2),))
     myresult = mycursor.fetchall()
     # print(myresult)
     now2 = []
     for i in myresult:
-        # print(i)
+        print(i)
         now2.append(i)
-    avgbike = int((now2[0][0]))
-    print("+2hr:", now2)
+    now2x = int((now2[0][0]))
+    print("2hr:", now2x)
 
     mycursor = mydb.cursor(dictionary=False)
-    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx,))
+    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx+3,))
     myresult = mycursor.fetchall()
     # print(myresult)
     now3 = []
     for i in myresult:
-        # print(i)
+        print(i)
         now3.append(i)
-    avgbike = int((now3[0][0]))
-    print("+3hr:", now3)
+    now3x = int((now3[0][0]))
+    print("3hr:", now3x)
 
     mycursor = mydb.cursor(dictionary=False)
-    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx,))
+    mycursor.execute("SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",(station_number, dayx, hourx+4,))
     myresult = mycursor.fetchall()
     # print(myresult)
     now4 = []
     for i in myresult:
-        # print(i)
+        print(i)
         now4.append(i)
-    avgbike = int((now4[0][0]))
-    print("+4hr:", now4)
+    now4x = int((now4[0][0]))
+    print("4hr:", now4x)
 
 
-    labelsx = ["Now", "+1hr", "+2hr", "+3hr", "+4hr"]
-    hr_valuesx = [now, now1, now2, now3, now4]
+    times = ["Now", "1hr", "2hr", "3hr", "4hr"]
+    qty = [nowx, now1x, now2x, now3x, now4x]
 
 # CHART: AVG STATION OCCUPANCY
 
@@ -191,7 +192,7 @@ def index():
 # RETURN TO FRONT END
     # Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list,
-                           labels=labels, day_values=day_values, labelsx=labelsx, hr_valuesx=hr_valuesx)
+                           labels=labels, day_values=day_values, times=times, qty=qty)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
