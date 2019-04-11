@@ -15,10 +15,10 @@
 <body>
 <div class="header">
   <div class="col"><img src="/static/images/kilroy.png" alt="logo"></div>
-    <div class="col">
+  <div class="col">
         <a><img src="/static/images/db_logo_white.jpg"></a>
     	<a>Dublin Bikes</a>
-    </div>
+  </div>
   <div class="col"><a class="current"></a></div>
   <div class="col"><a>&#8451</a></div>
 </div>
@@ -33,17 +33,22 @@
 
 <!-------Side menu container------------------------------------------------------------------->
 <div class="row">
+
   <div class="margin">
+    <br/>
+    <div id="radio">
+      <input type='radio' name='radioAvail' value='all' checked >All<br>
+      <input type='radio' name='radioAvail' value='AvailableBikes'>Available bikes<br>
+      <input type='radio' name='radioAvail' value='AvailableStands'>Available stands<br/>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+
     <div class="dropdown">
-      <p style="font-style:normal"><strong>Historical Charts & Predictions:</strong></p>
-      <form id="selections" action="{{ url_for('graphs') }}" method = "POST">
-           <!--<form id="radio" action="{{ url_for('graphs') }}" method = "POST">-->
-      <input type='radio' name='radio' value='available_bikes' checked>Available bikes<br><br>
-      <input type='radio' name='radio' value='available_bike_stands'>Available stands<br/>
-        <br>
-      <!--<input type="submit" value="submit!" />-->
-    <!--<hr/>-->
-        <select id='list' type="text" name="id" action="" method = "POST">
+      <p><i>Please select your station:</i></p>
+      <form id="selections">
+        <select id='list'>
           <option value='108'>Avondale Road </option>
           <option value='70'>Barrow Street </option>
           <option value='90'>Benson Street </option>
@@ -160,7 +165,7 @@
         </select>
 		  	<br/>
     		<br/>
-        <input type="submit" class="button" value="submit" onclick="dropdown()">
+        <input type="button" class="button" value="Submit" onclick="dropdown()">
 
       </form>
     </div>
@@ -292,10 +297,8 @@
             animation: google.maps.Animation.DROP
           })
           marker.addListener('click', function() {
-            map.setZoom(15);
+            map.setZoom(19);
             map.setCenter(marker.getPosition());
-            document.getElementById('chart1').style.display="None"
-            document.getElementById('chart2').style.display="None"
           });
           google.maps.event.addListener(
             marker,
