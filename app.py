@@ -2,6 +2,12 @@ from flask import Flask, flash, redirect, url_for, render_template, request, ses
 import mysql.connector
 import json
 import datetime
+import pickle
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression 
+from datetime import date
+import holidays
 
 app = Flask(__name__)
 
@@ -560,10 +566,28 @@ def index():
 #     day_values = [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
 
 
+# -------------------------------------------------------------------------------
+# PREDICTIVE MODEL
+
+# this would import the model... we don't want our front end to look really messy so its not going in. this is how we would send it to the front end if we were
+# with open('model.pkl', 'rb') as handle:
+#     model = pickle.load(handle)
+# @app.route("/predict")
+# def predict(X_test):
+#     # now we can call various methods over model as as:
+#     # Let X_test be the feature for which we want to predict the output
+#     result = model.predict(X_test)
+#     return jsonify(result) 
+# -------------------------------------------------------------------------------
+
+
 # RETURN TO FRONT END
     # Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list)
                            #labels=labels, day_values=day_values, times=times, qty=qty)
+
+ie_holidays = holidays.IE()
+print("holidays", date(2017,12,25) in ie_holidays)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
