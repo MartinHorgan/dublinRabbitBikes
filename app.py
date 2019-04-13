@@ -6,6 +6,8 @@ import pickle
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression 
+from datetime import date
+import holidays
 
 app = Flask(__name__)
 
@@ -583,6 +585,9 @@ def index():
     # Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list)
                            #labels=labels, day_values=day_values, times=times, qty=qty)
+
+ie_holidays = holidays.IE()
+print("holidays", date(2017,12,25) in ie_holidays)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
