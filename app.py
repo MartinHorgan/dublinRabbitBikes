@@ -2,6 +2,10 @@ from flask import Flask, flash, redirect, url_for, render_template, request, ses
 import mysql.connector
 import json
 import datetime
+import pickle
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression 
 
 app = Flask(__name__)
 
@@ -558,6 +562,21 @@ def index():
 #
 #     labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 #     day_values = [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+
+
+# -------------------------------------------------------------------------------
+# PREDICTIVE MODEL
+
+# this would import the model... we don't want our front end to look really messy so its not going in. this is how we would send it to the front end if we were
+# with open('model.pkl', 'rb') as handle:
+#     model = pickle.load(handle)
+# @app.route("/predict")
+# def predict(X_test):
+#     # now we can call various methods over model as as:
+#     # Let X_test be the feature for which we want to predict the output
+#     result = model.predict(X_test)
+#     return jsonify(result) 
+# -------------------------------------------------------------------------------
 
 
 # RETURN TO FRONT END
