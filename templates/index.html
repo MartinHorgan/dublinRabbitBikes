@@ -22,7 +22,6 @@
   <div class="col"><a class="current"></a></div>
   <div class="col"><a>&#8451</a></div>
 </div>
-
 <!--Navbar container------------------------------------------------------------------------->
 	<div class="nav">
 		<a href="index.html">Home</a>
@@ -260,6 +259,8 @@
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
         });
+        //var bikeLayer = new google.maps.BicyclingLayer();
+        //toggleBike = bikeLayer.setMap(map);
 
         /*pass in as a list instead of a whole string (safe instead of tojson)*/
         var markers = {{station_list | safe }};
@@ -267,22 +268,20 @@
         // var markerextra;
         // var markerinfo;
         console.log(markers)
-        var light = '/static/images/light.png'
-        var middle = '/static/images/middle.png'
-        var dark = '/static/images/dark.png'
-        var lightPark = '/static/images/lightPark.png'
-        var middlePark = '/static/images/middlePark.png'
-        var darkPark = '/static/images/darkPark.png'
+        var green = '/static/images/green-dot.png'
+        var yellow = '/static/images/yellow-dot.png'
+        var red = '/static/images/red-dot.png'
 
         for (var i = 0; i < markers.length; i++){
           var pos = new google.maps.LatLng(parseFloat(markers[i].latitude), parseFloat(markers[i].longitude));
           var currentIcon;
-          if (markers[i].available_Bikes >= 15) {
-            currentIcon = dark;
-          }else if ((markers[i].available_bikes >= 5) && (markers[i].available_bikes < 15)) {
-            currentIcon = middle;
-          }else if (markers[i].available_bikes < 5) {
-            currentIcon = light;
+          var allstands = markers[i].available_bikes + markers[i].available_bike_stands
+          if (markers[i].available_bikes/allstands >= 0.7) {
+            currentIcon = green;
+          }else if ((markers[i].available_bikes/allstands  >= 0.3) && (markers[i].available_bikes/allstands  < 0.7)) {
+            currentIcon = yellow;
+          }else if (markers[i].available_bikes/allstands  < 0.3) {
+            currentIcon = red;
           }
           var marker = new google.maps.Marker({
             position: pos,
@@ -356,7 +355,7 @@
 	/*station list script*/
 	function dropdown() {
 		var markers = {{station_list | safe}};
-
+    //what is coming from the dropdown - the selected value--look at line 380
 		var ddsel = document.getElementById("list");
 		var selectedStation = ddsel.options[ddsel.selectedIndex].value;
 
@@ -394,6 +393,30 @@
 		extraInfo += "</p>"
 		document.getElementById("extraDropdownInfo").innerHTML = extraInfo;
     }
+
+/* in progress!
+	//station list selected, map moves script
+	function shiftMap() {
+		var markers = {{station_list | safe}};
+    //what is coming from the dropdown - the selected value--look at line 380
+		var ddsel = document.getElementById("list");
+    var selectedStation = ddsel.options[ddsel.selectedIndex].value;
+    
+		for (var i = 0; i < markers.length; i++) {
+			var availableBikes = markers[i].available_bikes;
+			var availableStands = markers[i].available_bike_stands;
+			var stationNum = markers[i].number;
+			var stationAddress = markers[i].address;
+			var lastUpdate = markers[i].last_update;
+			var cardPayment = markers[i].banking;
+
+		  if (selectedStation == stationNum) {
+        var center = new google.maps.LatLng(lat, lng)
+
+			}
+		}
+
+    } */
 
 
     //geolocation error function
