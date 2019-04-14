@@ -5,8 +5,8 @@ import datetime
 import pickle
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression 
-from datetime import date
+#from sklearn.linear_model import LinearRegression
+from datetime import date, timedelta
 import holidays
 
 app = Flask(__name__)
@@ -45,6 +45,7 @@ def graphs():
 
     # this json dumps function is essential in returning data back to the front end correctly
     station_list = json.dumps(station_list)
+
 
 
 
@@ -580,14 +581,48 @@ def index():
 #     return jsonify(result) 
 # -------------------------------------------------------------------------------
 
+    ie_holidays = holidays.IE()
+    print("holidays", date(2017,12,25) in ie_holidays)
+
+    for ptr in holidays.IE(years=2019).items():
+        print(ptr)
+
+    now = datetime.datetime.now()
+
+    datetomorrow = datetime.datetime.now() + timedelta(days = 1)
+    dateintwodays = datetime.datetime.now() + timedelta(days=2)
+    dateinthreedays = datetime.datetime.now() + timedelta(days=3)
+    dateinfourdays = datetime.datetime.now() + timedelta(days=4)
+    dateinfivedays = datetime.datetime.now() + timedelta(days=5)
+    dateinsixdays = datetime.datetime.now() + timedelta(days=6)
+
+    print("current date is: ", now.strftime("%Y-%m-%d"))
+    print("in six days: ", dateinsixdays.strftime("%d %B %Y"))
+    print ("is this easter?", date(2019,4,22) in ie_holidays )
+    if (now.strftime("%Y, %m, %d")) in ie_holidays:
+        print ("today is", ie_holidays.get(now.strftime("%Y-%m-%d")))
+    if (datetomorrow.strftime("%Y, %m, %d")) in ie_holidays:
+        print ("tomorrow is", ie_holidays.get(datetomorrow.strftime("%Y-%m-%d")))
+    if (dateintwodays.strftime("%Y, %m, %d")) in ie_holidays:
+        print (ie_holidays.get(dateintwodays.strftime("%Y-%m-%d")), "is in two days!")
+    if (dateinthreedays.strftime("%Y, %m, %d")) in ie_holidays:
+        print (ie_holidays.get(dateinthreedays.strftime("%Y-%m-%d")), "is in three days!")
+    if (dateinfourdays.strftime("%Y, %m, %d")) in ie_holidays:
+        print (ie_holidays.get(dateinfourdays.strftime("%Y-%m-%d")), "is in four days!")
+    if (dateinfivedays.strftime("%Y, %m, %d")) in ie_holidays:
+        print (ie_holidays.get(dateinfivedays.strftime("%Y-%m-%d")), "is in five days!")
+    if (dateinsixdays.strftime("%Y, %m, %d")) in ie_holidays:
+        print (ie_holidays.get(dateinsixdays.strftime("%Y-%m-%d")), "is in six days!")
+
+
+
 
 # RETURN TO FRONT END
     # Then we return something... This could be a html page, or variables... It's usually both though
     return render_template("/index.html", welcomemessage=welcomemessage, station_list=station_list)
                            #labels=labels, day_values=day_values, times=times, qty=qty)
 
-ie_holidays = holidays.IE()
-print("holidays", date(2017,12,25) in ie_holidays)
+
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
