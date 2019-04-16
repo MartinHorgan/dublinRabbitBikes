@@ -22,6 +22,8 @@
   <div class="col"><a class="current"></a></div>
   <div class="col"><a>&#8451</a></div>
 </div>
+
+
 <!--Navbar container------------------------------------------------------------------------->
 	<div class="nav">
 		<a href="index.html">Home</a>
@@ -248,6 +250,17 @@
   </div>
 </div>
 
+
+<div id="floating-panel">
+  <b>Mode of Travel: </b>
+  <select id="mode">
+    <option value="DRIVING">Driving</option>
+    <option value="WALKING">Walking</option>
+    <option value="BICYCLING">Bicycling</option>
+    <option value="TRANSIT">Transit</option>
+  </select>
+  </div>
+
 <!---Map script------------------------------------------------------------------------------->
     <script>
 
@@ -255,9 +268,16 @@
 
       function initMap() {
         var myLatLng = {lat: 53.348196, lng: -6.276942}
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsService = new google.maps.DirectionsService;
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 53.348196, lng: -6.276942},
           zoom: 13
+        });
+        directionsDisplay.setMap(map);
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+        document.getElementById('mode').addEventListener('change', function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
         });
         //var bikeLayer = new google.maps.BicyclingLayer();
         //toggleBike = bikeLayer.setMap(map);
@@ -334,23 +354,45 @@
         // geolocation
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            var geopos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('you are here');
+            infoWindow.setPosition(geopos);
+            infoWindow.setContent('you are here!');
             infoWindow.open(map);
-            map.setCenter(pos);
+            map.setCenter(geopos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
+          
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
+
       }
+
+      
+        //cant get this to work - want origin to be geopos, but it wont work
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, geopos) {
+        var selectedMode = document.getElementById('mode').value;
+        directionsService.route({
+          origin: pos,  // Haight.
+          destination: myLatLng,  // Ocean Beach.
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: google.maps.TravelMode[selectedMode]
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
 
 	/*station list script*/
 	function dropdown() {
@@ -420,8 +462,8 @@
 
 
     //geolocation error function
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
+    function handleLocationError(browserHasGeolocation, infoWindow, geopos) {
+        infoWindow.setPosition(geopos);
         infoWindow.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');

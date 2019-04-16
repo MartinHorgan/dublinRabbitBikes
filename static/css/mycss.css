@@ -104,3 +104,16 @@ select {
     height:100%;
     width: 100%;
 }
+#floating-panel {
+    position: absolute;
+    top: 40%;
+    left: 75%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    line-height: 30px;
+    padding-left: 10px;
+  }
