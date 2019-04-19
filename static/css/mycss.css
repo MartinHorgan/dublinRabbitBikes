@@ -78,9 +78,9 @@ h1 {
 	cursor:pointer;
 	color:black;
 	font-family:Verdana;
-	font-size:15px;
-    width: 70px;
-    height: 30px;
+	font-size:13px;
+    width: 65px;
+    height: 25px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
 }
@@ -97,7 +97,7 @@ h1 {
 }
 
 submitbutton:active {
-	position:relative;
+    position:relative;
 	top:1px;
 }
 
@@ -115,13 +115,13 @@ select {
     background-repeat: no-repeat;
     border: 1px solid #AAA;
     color: black;
-    font-size: inherit;
+    font-size: 14px;
     margin: 20px;
     overflow: hidden;
-    padding: 5px 10px;
+    padding: 5px 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 90%;
+    width: 85%;
 }
 
 .column {
@@ -145,6 +145,11 @@ select {
     text-align: center;
 }
 
+.radioselect{
+    text-align: left;
+    font-size: 14px;
+}
+
 #radio {
     text-align: left;
 }
@@ -161,12 +166,12 @@ select {
 
 .currentw {
     float: left;
-    font-size: 31pt;
+    font-size: 25pt;
 }
 
 .col {
     float: right;
-    width: 205px;
+    width: 200px;
     height: 70px;
     padding-left: 10px;
     padding-right: 10px;
@@ -278,5 +283,7 @@ select {
 }
 
 #maintext {
+    line-height: 20px;
     text-align: left;
+    font-size: 14
 }

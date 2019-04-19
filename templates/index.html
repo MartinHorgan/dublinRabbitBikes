@@ -36,10 +36,10 @@
     <div class="dropdown">
       <form id="selections" action="{{ url_for('graphs') }}" method = "POST">
         <br/>
-        <p id='maintext'>Select a station on the map to view the most recent information.<br/><br/>Otherwise, choose a station from the dropdown to view the predicted availability.<br/><br/>View predicted availability by:</p><br/>
+        <p id='maintext'>Select a station on the map to view the most recent information.<br/><br/>Otherwise, choose a station from the dropdown to view the predicted availability.<br/><br/><br/>View predicted availability by:</p>
         <form id="radio" action="{{ url_for('graphs') }}" method = "POST">
-          <input type='radio' name='radio' value='available_bikes' checked>Available bikes<br/>
-          <input type='radio' name='radio' value='available_bike_stands'>Available stands<br/>
+          <div class = "radioselect"><input type='radio' name='radio' value='available_bikes' checked>&nbsp;&nbsp;&nbsp;&nbsp; Available bikes<br/>
+          <input type='radio' name='radio' value='available_bike_stands'>&nbsp;&nbsp;&nbsp;&nbsp; Available stands<br/></div>
           <select id='list' type="text" name="id" action="" method = "POST">
             <option value='108'>Avondale Road </option>
             <option value='70'>Barrow Street </option>
