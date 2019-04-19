@@ -276,7 +276,18 @@
 
       var time = markers[i].last_update
       let formattime = new Date(time);
-      var formattedtime = formattime.getHours() + ":" + formattime.getMinutes();
+      var formatmins = formattime.getMinutes().toString()
+
+      if (formatmins.length == 1) {
+        var mins = '0' + formatmins;
+      } else {
+        var mins = formatmins;
+      }
+
+      var formattedtime = formattime.getHours() + ":" + formatmins;
+
+
+      console.log(formattime.getHours())
 
       var marker = new google.maps.Marker({
         position: pos,
@@ -304,7 +315,7 @@
               '<div class="iw-subTitle">' + markers[i].name + '</div>' + 
               'Number of bikes to ride: ' + markers[i].available_bikes + 
               '<br>Number of bike stands empty: ' + markers[i].available_bike_stands + 
-              '<br>Last update:' + formattedtime +
+              '<br>Last update: ' + formattedtime +
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
               '</div>';
