@@ -5,7 +5,7 @@ import datetime
 import pickle
 import pandas as pd
 import numpy as np
-#from sklearn.linear_model import LinearRegression
+#from sklearn.linear_model import LinearRegression 
 from datetime import date, timedelta
 import holidays
 
@@ -20,7 +20,8 @@ def graphs():
         passwd="whiterabbit",
         database="dbbikes"
     )
-    # print("TESSSDFNISDKFSLDIFN")
+
+    # GET FORMS FROM HTML
     radio = request.form.get('radio')
     stn = request.form.get('id')
 
@@ -34,21 +35,18 @@ def graphs():
     myresult = mycursor.fetchall()
     # We make an empty list
     station_list = []
-    # for every result we get back, we add that to the list in a new index
 
+    # for every result we get back, we add that to the list in a new index
     for x in myresult:
         station_list.append(dict((x)))
-    # This 'welcomemessage' is an example of passing a variable back into the front end using jinjas2
-    welcomemessage = "Hello, welcome to Dublin Bikes!"
-    # Then we ALWAYS PRINT STUFF TO MAKE SURE IT'S ACTUALLY RIGHT'
+
+    # Print station list for error checking
     print(station_list)
 
     # this json dumps function is essential in returning data back to the front end correctly
     station_list = json.dumps(station_list)
 
-
-
-
+    # CHARTS: DECLARE X AS CURRENT DATE/TIME
     x = datetime.datetime.now()
     station_number = stn
     dayx = x.strftime("%A")
@@ -58,22 +56,8 @@ def graphs():
     print("this is radio:", radio)
     print("this is stn:", stn)
 
-    # CHART: AVG BIKES BY DAY/HOUR
-
+    # CHARTS: AVG BIKES BY SELECTED STATION, NOW & +HOURS, for Radio button "Available Bikes"
     if radio == "available_bikes":
-        mycursor = mydb.cursor(dictionary=False)
-        mycursor.execute(
-            "SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",
-            (station_number, dayx, hourx,))
-        myresult = mycursor.fetchall()
-        # print(myresult)
-        now = []
-        for i in myresult:
-            print(i)
-            now.append(i)
-        nowx = int((now[0][0]))
-        print("Now:", nowx)
-
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
             "SELECT avg(available_bikes) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",
@@ -82,10 +66,13 @@ def graphs():
         # print(myresult)
         now1 = []
         for i in myresult:
-            print(i)
+            print("now1:",i)
             now1.append(i)
-        now1x = int((now1[0][0]))
-        print("1hr:", now1x)
+        try:
+            now1x = int((now1[0][0]))
+            print("1hr:", now1x)
+        except:
+            now1x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -95,10 +82,13 @@ def graphs():
         # print(myresult)
         now2 = []
         for i in myresult:
-            print(i)
+            print("now2:",i)
             now2.append(i)
-        now2x = int((now2[0][0]))
-        print("2hr:", now2x)
+        try:
+            now2x = int((now2[0][0]))
+            print("2hr:", now2x)
+        except:
+            now2x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -108,10 +98,13 @@ def graphs():
         # print(myresult)
         now3 = []
         for i in myresult:
-            print(i)
+            print("now3:",i)
             now3.append(i)
-        now3x = int((now3[0][0]))
-        print("3hr:", now3x)
+        try:
+            now3x = int((now3[0][0]))
+            print("3hr:", now3x)
+        except:
+            now3x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -121,16 +114,18 @@ def graphs():
         # print(myresult)
         now4 = []
         for i in myresult:
-            print(i)
+            print("now4:",i)
             now4.append(i)
-        now4x = int((now4[0][0]))
-        print("4hr:", now4x)
+        try:
+            now4x = int((now4[0][0]))
+            print("4hr:", now4x)
+        except:
+            now4x = 0
 
-        times = ["Now", "1hr", "2hr", "3hr", "4hr"]
-        qty = [nowx, now1x, now2x, now3x, now4x]
+        times = ["1hr", "2hr", "3hr", "4hr"]
+        qty = [now1x, now2x, now3x, now4x]
 
-        # CHART: AVG STATION OCCUPANCY
-
+        # CHARTS: AVG STATION OCCUPANCY BY DAY-OF-WEEK, for Radio button "Available Bikes"
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
             "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 1)  AND number = %s",
@@ -156,8 +151,9 @@ def graphs():
         tuesday = int((tue[0][0]))
         print("Tuesday:", tuesday)
 
-        mycursor.execute("SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 3) and number = %s",
-                         (station_number,))
+        mycursor.execute(
+            "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 3) and number = %s",
+            (station_number,))
         myresult = mycursor.fetchall()
         # print(myresult)
         wed = []
@@ -167,8 +163,9 @@ def graphs():
         wednesday = int((wed[0][0]))
         print("Wednesday:", wednesday)
 
-        mycursor.execute("SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 4) and number = %s",
-                         (station_number,))
+        mycursor.execute(
+            "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 4) and number = %s",
+            (station_number,))
         myresult = mycursor.fetchall()
         # print(myresult)
         thur = []
@@ -178,8 +175,9 @@ def graphs():
         thursday = int((thur[0][0]))
         print("Thursday:", thursday)
 
-        mycursor.execute("SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 5) and number = %s",
-                         (station_number,))
+        mycursor.execute(
+            "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 5) and number = %s",
+            (station_number,))
         myresult = mycursor.fetchall()
         # print(myresult)
         fri = []
@@ -189,8 +187,9 @@ def graphs():
         friday = int((fri[0][0]))
         print("Friday:", friday)
 
-        mycursor.execute("SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 6) and number = %s",
-                         (station_number,))
+        mycursor.execute(
+            "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 6) and number = %s",
+            (station_number,))
         myresult = mycursor.fetchall()
         # print(myresult)
         sat = []
@@ -200,8 +199,9 @@ def graphs():
         saturday = int((sat[0][0]))
         print("Saturday:", saturday)
 
-        mycursor.execute("SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 7) and number = %s",
-                         (station_number,))
+        mycursor.execute(
+            "SELECT avg(available_bikes) from availability where (DAYOFWEEK(last_update) = 7) and number = %s",
+            (station_number,))
         myresult = mycursor.fetchall()
         # print(myresult)
         sun = []
@@ -214,19 +214,8 @@ def graphs():
         labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         day_values = [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
     else:
-        mycursor = mydb.cursor(dictionary=False)
-        mycursor.execute(
-            "SELECT avg(available_bike_stands) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",
-            (station_number, dayx, hourx,))
-        myresult = mycursor.fetchall()
-        # print(myresult)
-        now = []
-        for i in myresult:
-            print(i)
-            now.append(i)
-        nowx = int((now[0][0]))
-        print("Now:", nowx)
 
+        # CHARTS: AVG BIKES BY SELECTED STATION, NOW & +HOURS, for Radio button "Available Stands"
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
             "SELECT avg(available_bike_stands) from availability where number = %s and (DAYNAME(last_update) = %s) AND (HOUR(last_update) = %s)",
@@ -237,8 +226,11 @@ def graphs():
         for i in myresult:
             print(i)
             now1.append(i)
-        now1x = int((now1[0][0]))
-        print("1hr:", now1x)
+        try:
+            now1x = int((now1[0][0]))
+            print("1hr:", now1x)
+        except:
+            now1x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -250,8 +242,11 @@ def graphs():
         for i in myresult:
             print(i)
             now2.append(i)
-        now2x = int((now2[0][0]))
-        print("2hr:", now2x)
+        try:
+            now2x = int((now2[0][0]))
+            print("2hr:", now2x)
+        except:
+            now2x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -263,8 +258,11 @@ def graphs():
         for i in myresult:
             print(i)
             now3.append(i)
-        now3x = int((now3[0][0]))
-        print("3hr:", now3x)
+        try:
+            now3x = int((now3[0][0]))
+            print("3hr:", now3x)
+        except:
+            now3x = 0
 
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
@@ -276,14 +274,16 @@ def graphs():
         for i in myresult:
             print(i)
             now4.append(i)
-        now4x = int((now4[0][0]))
-        print("4hr:", now4x)
+        try:
+            now4x = int((now4[0][0]))
+            print("4hr:", now4x)
+        except:
+            now4x = 0
 
-        times = ["Now", "1hr", "2hr", "3hr", "4hr"]
-        qty = [nowx, now1x, now2x, now3x, now4x]
+        times = ["1hr", "2hr", "3hr", "4hr"]
+        qty = [now1x, now2x, now3x, now4x]
 
-        # CHART: AVG STATION OCCUPANCY
-
+        # CHARTS: AVG BIKES BY SELECTED STATION, NOW & +HOURS, for Radio button "Available Stands"
         mycursor = mydb.cursor(dictionary=False)
         mycursor.execute(
             "SELECT avg(available_bike_stands) from availability where (DAYOFWEEK(last_update) = 1)  AND number = %s",
@@ -372,10 +372,41 @@ def graphs():
         labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
         day_values = [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
 
+    #getting the holidays for ireland
+    ie_holidays = holidays.IE()
+    print("holidays", date(2017,12,25) in ie_holidays)
+
+    now = datetime.datetime.now()
+    datetomorrow = datetime.datetime.now() + timedelta(days = 1)
+    dateintwodays = datetime.datetime.now() + timedelta(days=2)
+    dateinthreedays = datetime.datetime.now() + timedelta(days=3)
+    dateinfourdays = datetime.datetime.now() + timedelta(days=4)
+    dateinfivedays = datetime.datetime.now() + timedelta(days=5)
+    dateinsixdays = datetime.datetime.now() + timedelta(days=6)
+
+    print("current date is: ", now.strftime("%Y-%m-%d"))
+    print("in six days: ", dateinsixdays.strftime("%d %B %Y"))
+    print ("is this easter?", date(2019,4,22) in ie_holidays )
+
+    holidaylist = []
+
+    if (now.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(now.strftime("%Y-%m-%d")) + " is today! This may affect bike availability.")
+    if (datetomorrow.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(datetomorrow.strftime("%Y-%m-%d")) + " is tomorrow! This may affect bike availability.")
+    if (dateintwodays.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(dateintwodays.strftime("%Y-%m-%d")) + " is in 2 days! This may affect bike availability.")
+    if (dateinthreedays.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(dateinthreedays.strftime("%Y-%m-%d")) + " is in 3 days! This may affect bike availability.")
+    if (dateinfourdays.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(dateinfourdays.strftime("%Y-%m-%d")) + " is in 4 days! This may affect bike availability.")
+    if (dateinfivedays.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(dateinfivedays.strftime("%Y-%m-%d")) + " is in 5 days! This may affect bike availability.")
+    if (dateinsixdays.strftime("%Y, %m, %d")) in ie_holidays:
+        holidaylist.append(ie_holidays.get(dateinsixdays.strftime("%Y-%m-%d")) + " is in 6 days! This may affect bike availability.")
+
     # RETURN TO FRONT END
-    # Then we return something... This could be a html page, or variables... It's usually both though
-    return render_template ("/index.html",welcomemessage=welcomemessage, station_list=station_list,
-                            labels=labels,day_values=day_values, times=times, qty=qty)
+    return render_template ("/index.html", station_list=station_list, labels=labels,day_values=day_values, times=times, qty=qty, holidaylist=holidaylist)
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -411,18 +442,6 @@ def index():
     # this json dumps function is essential in returning data back to the front end correctly
     station_list = json.dumps(station_list)
 
-
-    # input variables
-    x = datetime.datetime.now()
-    station_number = 99
-    dayx = x.strftime("%A")
-    hourx = int(x.strftime("%H"))
-    print(dayx)
-    print(hourx)
-    print("this is radio:", radio)
-    # print("this is stn:", stn)
-
-
     #getting the holidays for ireland
     ie_holidays = holidays.IE()
     print("holidays", date(2017,12,25) in ie_holidays)
@@ -442,29 +461,23 @@ def index():
     holidaylist = []
 
     if (now.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(now.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(now.strftime("%Y-%m-%d")) + " is today! This may affect bike availability.")
     if (datetomorrow.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(datetomorrow.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(datetomorrow.strftime("%Y-%m-%d")) + " is tomorrow! This may affect bike availability.")
     if (dateintwodays.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(dateintwodays.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(dateintwodays.strftime("%Y-%m-%d")) + " is in 2 days! This may affect bike availability.")
     if (dateinthreedays.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(dateinthreedays.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(dateinthreedays.strftime("%Y-%m-%d")) + " is in 3 days! This may affect bike availability.")
     if (dateinfourdays.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(dateinfourdays.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(dateinfourdays.strftime("%Y-%m-%d")) + " is in 4 days! This may affect bike availability.")
     if (dateinfivedays.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(dateinfivedays.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(dateinfivedays.strftime("%Y-%m-%d")) + " is in 5 days! This may affect bike availability.")
     if (dateinsixdays.strftime("%Y, %m, %d")) in ie_holidays:
-        holidaylist.append(ie_holidays.get(dateinsixdays.strftime("%Y-%m-%d")))
+        holidaylist.append(ie_holidays.get(dateinsixdays.strftime("%Y-%m-%d")) + " is in 6 days! This may affect bike availability.")
 
-
-
-
-# RETURN TO FRONT END
-    # Then we return something... This could be a html page, or variables... It's usually both though
+    # RETURN TO FRONT END
     return render_template("/index.html", station_list=station_list, holidaylist=holidaylist)
-                           #labels=labels, day_values=day_values, times=times, qty=qty)
-
-
+                           
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
