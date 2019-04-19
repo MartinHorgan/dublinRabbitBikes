@@ -392,18 +392,20 @@ def graphs():
 
     if (now.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(now.strftime("%Y-%m-%d")) + " is today! This may affect bike availability.")
-    if (datetomorrow.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (datetomorrow.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(datetomorrow.strftime("%Y-%m-%d")) + " is tomorrow! This may affect bike availability.")
-    if (dateintwodays.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (dateintwodays.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(dateintwodays.strftime("%Y-%m-%d")) + " is in 2 days! This may affect bike availability.")
-    if (dateinthreedays.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (dateinthreedays.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(dateinthreedays.strftime("%Y-%m-%d")) + " is in 3 days! This may affect bike availability.")
-    if (dateinfourdays.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (dateinfourdays.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(dateinfourdays.strftime("%Y-%m-%d")) + " is in 4 days! This may affect bike availability.")
-    if (dateinfivedays.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (dateinfivedays.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(dateinfivedays.strftime("%Y-%m-%d")) + " is in 5 days! This may affect bike availability.")
-    if (dateinsixdays.strftime("%Y, %m, %d")) in ie_holidays:
+    elif (dateinsixdays.strftime("%Y, %m, %d")) in ie_holidays:
         holidaylist.append(ie_holidays.get(dateinsixdays.strftime("%Y-%m-%d")) + " is in 6 days! This may affect bike availability.")
+    else:
+        holidaylist.append("There are no upcoming holidays. Enjoy your day!")
 
     # RETURN TO FRONT END
     return render_template ("/index.html", station_list=station_list, labels=labels,day_values=day_values, times=times, qty=qty, holidaylist=holidaylist)

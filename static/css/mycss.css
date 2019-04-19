@@ -17,7 +17,7 @@ header {
 h1 {
     font-size: 100px;
     font-family: 'Open Sans Condensed', sans-serif;
-    color: white;
+    color:	white;
     text-align: center;
     padding-left: 40px;
     letter-spacing: 0.07em;
@@ -161,7 +161,7 @@ select {
 
 .currentw {
     float: left;
-    font-size: 32pt;
+    font-size: 31pt;
 }
 
 .col {
@@ -189,7 +189,7 @@ select {
 	float: left;
 	margin: 25px 0 0 25px;
 	display: none;
-	text-align: center;
+	text-align: left;
 	/* width: 100px; */
 	padding:20px;
 	border-radius: 2px 2px 2px 2px;
@@ -210,7 +210,7 @@ select {
 }
 
 .gm-style-iw {
-	width: 350px !important;
+	width: 320px !important;
 	top: 15px !important;
 	left: 0px !important;
 	background-color: #fff;
@@ -223,7 +223,7 @@ select {
 }
 #iw-container .iw-title {
 	font-family: 'Open Sans Condensed', sans-serif;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 400;
 	padding: 10px;
 	background-color: #064d57;
@@ -232,7 +232,7 @@ select {
 	border-radius: 2px 2px 0 0;
 }
 #iw-container .iw-content {
-	font-size: 13px;
+	font-size: 12px;
 	line-height: 18px;
 	font-weight: 400;
 	margin-right: 1px;
@@ -275,4 +275,8 @@ select {
     background: rgba(245, 245, 245, 0.3);
     border-radius: 2px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#maintext {
+    text-align: left;
 }

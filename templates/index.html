@@ -36,7 +36,7 @@
     <div class="dropdown">
       <form id="selections" action="{{ url_for('graphs') }}" method = "POST">
         <br/>
-        <p>Select a station on the map to view most recent information.<br/> Otherwise, choose a station from the dropdown to view predicted availability of either bikes or bike stands.</p><br/>
+        <p id='maintext'>Select a station on the map to view the most recent information.<br/><br/>Otherwise, choose a station from the dropdown to view the predicted availability.<br/><br/>View predicted availability by:</p><br/>
         <form id="radio" action="{{ url_for('graphs') }}" method = "POST">
           <input type='radio' name='radio' value='available_bikes' checked>Available bikes<br/>
           <input type='radio' name='radio' value='available_bike_stands'>Available stands<br/>
@@ -156,7 +156,6 @@
             <option value='51'>York Street West</option>
           </select>
           <br/>
-          <!-- <input type="submit" class="submitbutton" value="Submit" onclick="dropdown(), display();"> -->
           <input type="submit" class="submitbutton" value="Submit" onclick="display();">
           <br/>
           <br/>
@@ -175,7 +174,7 @@
     <canvas id="chart2" width="250" height="150"></canvas>
 
   </div>
-  <!-- End Margin Container -->
+  <!-- End margin container -->
 
   <div class="column">
 		<div id="map"></div>
@@ -199,6 +198,7 @@
                       {% endfor %}]                 
     }]
   }
+
   var mychart1 = document.getElementById("chart1").getContext("2d");
   steps = 4;
   max = 40;
@@ -247,7 +247,7 @@
     var myLatLng = {lat: 53.348196, lng: -6.276942}
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 53.348196, lng: -6.276942},
-      zoom: 13
+      zoom: 14
     });
 
     /*pass in as a list instead of a whole string (safe instead of tojson)*/
@@ -273,6 +273,11 @@
       } else if (markers[i].available_bikes/allstands  < 0.3) {
         currentIcon = red;
       }
+
+      var time = markers[i].last_update
+      let formattime = new Date(time);
+      var formattedtime = formattime.getHours() + ":" + formattime.getMinutes();
+
       var marker = new google.maps.Marker({
         position: pos,
         map: map,
@@ -281,7 +286,7 @@
         animation: google.maps.Animation.DROP
       })
       marker.addListener('click', function() {
-        map.setZoom(15);
+        map.setZoom(17);
         map.setCenter(marker.getPosition());
         document.getElementById('chart1').style.display="None"
         document.getElementById('chart2').style.display="None"
@@ -299,6 +304,7 @@
               '<div class="iw-subTitle">' + markers[i].name + '</div>' + 
               'Number of bikes to ride: ' + markers[i].available_bikes + 
               '<br>Number of bike stands empty: ' + markers[i].available_bike_stands + 
+              '<br>Last update:' + formattedtime +
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
               '</div>';
@@ -307,11 +313,11 @@
               + markers[i].address + "</b></p><br/><hr/><br/><p>"
               + bikeicon + '&nbsp;&nbsp;&nbsp;&nbsp; Available bikes: ' + markers[i].available_bikes + '<br/>'
               + standicon + '&nbsp;&nbsp;&nbsp;&nbsp; Available stands: ' + markers[i].available_bike_stands + '<br/>'
-              + timeicon + '&nbsp;&nbsp;&nbsp;&nbsp; Last update: ' + markers[i].last_update + '<br/>';
+              + timeicon + '&nbsp;&nbsp;&nbsp;&nbsp; Last update: ' + formattedtime + '<br/>';
               if (markers[i].banking == 1) {
-                sideContent += cardicon + '&nbsp;&nbsp;&nbsp;&nbsp; Card payments accepted: Yes';
+                sideContent += cardicon + '&nbsp;&nbsp;&nbsp;&nbsp; Pay by card: Yes';
               } else {
-                sideContent += cardicon + '&nbsp;&nbsp;&nbsp;&nbsp; Card payments accepted: No';
+                sideContent += cardicon + '&nbsp;&nbsp;&nbsp;&nbsp; Pay by card: No';
               }
             sideContent += '</p>';
             infoWindow.setContent(contentString)
@@ -324,11 +330,6 @@
         })(marker, i)
       )
     }
-
-    /*close popup window*/
-    /* google.maps.event.addListener(map, 'click', function() {
-    infowindow.close();
-    });*/
 
     // SOURCE: https://codepen.io/Marnoto/pen/xboPmG - formatting infoWindow
     google.maps.event.addListener(infoWindow, 'domready', function() {
@@ -351,23 +352,23 @@
     });
 
     // geolocation
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        infoWindow.setPosition(pos);
-        infoWindow.setContent('Your current location.');
-        infoWindow.open(map);
-        map.setCenter(pos);
-      }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
-      });
-    } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
-    }
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition(function(position) {
+    //     var pos = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     };
+    //     infoWindow.setPosition(pos);
+    //     infoWindow.setContent('Your current location.');
+    //     infoWindow.open(map);
+    //     map.setCenter(pos);
+    //   }, function() {
+    //     handleLocationError(true, infoWindow, map.getCenter());
+    //   });
+    // } else {
+    //   // Browser doesn't support Geolocation
+    //   handleLocationError(false, infoWindow, map.getCenter());
+    // }
   }
   
   // script for displaying current weather
@@ -385,35 +386,14 @@
     }
   });
 
-/* in progress!
-//station list selected, map moves script
-function shiftMap() {
-  var markers = {{station_list | safe}};
-  //what is coming from the dropdown - the selected value--look at line 380
-  var ddsel = document.getElementById("list");
-  var selectedStation = ddsel.options[ddsel.selectedIndex].value;
-  
-  for (var i = 0; i < markers.length; i++) {
-    var availableBikes = markers[i].available_bikes;
-    var availableStands = markers[i].available_bike_stands;
-    var stationNum = markers[i].number;
-    var stationAddress = markers[i].address;
-    var lastUpdate = markers[i].last_update;
-    var cardPayment = markers[i].banking;
-    if (selectedStation == stationNum) {
-      var center = new google.maps.LatLng(lat, lng)
-    }
-  }
-  } */
   //geolocation error function
-  
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-                          'Error: The Geolocation service failed.' :
-                          'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
-  }
+  // function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  //   infoWindow.setPosition(pos);
+  //   infoWindow.setContent(browserHasGeolocation ?
+  //                         'Error: The Geolocation service failed.' :
+  //                         'Error: Your browser doesn\'t support geolocation.');
+  //   infoWindow.open(map);
+  // }
 
 </script>
 
